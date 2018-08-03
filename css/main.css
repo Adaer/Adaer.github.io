@@ -1943,7 +1943,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #ff37ff;
+  background: #57f5e8;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3242,8 +3242,22 @@ pre .javascript .function {
   }
 }
 article.post.post-type-normal:hover {
-  transtion: all 0.5s linear;
-  -webkit-box-shadow: 2px 0px 10px 4px #d0d0d0;
-  -moz-box-shadow: 2px 0px 10px 4px #d0d0d0;
-  box-shadow: 2px 0px 10px 4px #d0d0d0;
+  transition: all 0.3s linear;
+  -webkit-box-shadow: 2px 0px 10px 4px #404040;
+  -moz-box-shadow: 2px 0px 10px 4px #404040;
+  box-shadow: 2px 0px 10px 4px #404040;
+}
+article.post.post-type-normal .post-block {
+  background: rgba(255,255,255,0.85);
+}
+.canvas-content {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  z-index: -100;
 }

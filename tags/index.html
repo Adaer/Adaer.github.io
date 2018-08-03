@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="记录JavaScript的一些小技巧">
-<meta name="keywords" content="javascript">
+<meta name="description" content="前端开发的自我修行">
 <meta property="og:type" content="website">
-<meta property="og:title" content="tags">
+<meta property="og:title" content="标签">
 <meta property="og:url" content="http://yoursite.com/tags/index.html">
 <meta property="og:site_name" content="Adaer -- Blogs">
-<meta property="og:description" content="记录JavaScript的一些小技巧">
+<meta property="og:description" content="前端开发的自我修行">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-03T06:46:07.877Z">
+<meta property="og:updated_time" content="2018-08-03T11:03:50.632Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="记录JavaScript的一些小技巧">
+<meta name="twitter:title" content="标签">
+<meta name="twitter:description" content="前端开发的自我修行">
 
 
 
@@ -126,7 +125,7 @@
 
 
 
-  <title>tags | Adaer -- Blogs</title>
+  <title>标签 | Adaer -- Blogs</title>
   
 
 
@@ -268,7 +267,7 @@
     <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">tags</h1>
+	<h1 class="post-title" itemprop="name headline">标签</h1>
 
 
 
@@ -282,10 +281,10 @@
         
           <div class="tag-cloud">
             <div class="tag-cloud-title">
-                目前共计 4 个标签
+                目前共计 2 个标签
             </div>
             <div class="tag-cloud-tags">
-              <a href="/tags/github/" style="font-size: 12px; color: #ccc">github</a> <a href="/tags/hexo/" style="font-size: 12px; color: #ccc">hexo</a> <a href="/tags/javascript/" style="font-size: 12px; color: #ccc">javascript</a> <a href="/tags/npm/" style="font-size: 12px; color: #ccc">npm</a>
+              <a href="/tags/hexo/" style="font-size: 12px; color: #ccc">hexo</a> <a href="/tags/wamp/" style="font-size: 12px; color: #ccc">wamp</a>
             </div>
           </div>
         
@@ -305,10 +304,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -359,10 +354,10 @@
               
               
               <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">1</span>
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
-                
+                </a>
               </div>
             
 
@@ -371,7 +366,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -432,7 +427,217 @@
 <div class="powered-by">
 <i class="fa fa-user-md"></i> Power by Hexo
 </div>
+<div class="canvas-content"><canvas id="canvas"></canvas></div>
+<script>
+  function project3D(x,y,z,vars){
+    var p,d;
+    x-=vars.camX;
+    y-=vars.camY-8;
+    z-=vars.camZ;
+    p=Math.atan2(x,z);
+    d=Math.sqrt(x*x+z*z);
+    x=Math.sin(p-vars.yaw)*d;
+    z=Math.cos(p-vars.yaw)*d;
+    p=Math.atan2(y,z);
+    d=Math.sqrt(y*y+z*z);
+    y=Math.sin(p-vars.pitch)*d;
+    z=Math.cos(p-vars.pitch)*d;
+    var rx1=-1000;
+    var ry1=1;
+    var rx2=1000;
+    var ry2=1;
+    var rx3=0;
+    var ry3=0;
+    var rx4=x;
+    var ry4=z;
+    var uc=(ry4-ry3)*(rx2-rx1)-(rx4-rx3)*(ry2-ry1);
+    var ua=((rx4-rx3)*(ry1-ry3)-(ry4-ry3)*(rx1-rx3))/uc;
+    var ub=((rx2-rx1)*(ry1-ry3)-(ry2-ry1)*(rx1-rx3))/uc;
+    if(!z)z=0.000000001;
+    if(ua>0&&ua<1&&ub>0&&ub<1){
+      return{
+        x:vars.cx+(rx1+ua*(rx2-rx1))*vars.scale,
+        y:vars.cy+y/z*vars.scale,
+        d:(x*x+y*y+z*z)}}
+    else{
+      return{d:-1}}
+  }
+  function elevation(x,y,z){
+    var dist=Math.sqrt(x*x+y*y+z*z);
+    if(dist&&z/dist>=-1&&z/dist<=1)
+    return Math.acos(z/dist);
+    return 0.00000001
+  }
 
+  function rgb(col){
+    col+=0.000001;
+    var r=parseInt((0.5+Math.sin(col)*0.5)*16);
+    var g=parseInt((0.5+Math.cos(col)*0.5)*16);
+    var b=parseInt((0.5-Math.sin(col)*0.5)*16);
+    return"#"+r.toString(16)+g.toString(16)+b.toString(16)
+  }
+
+  function interpolateColors(RGB1,RGB2,degree){
+    var w2=degree;
+    var w1=1-w2;
+    return[w1*RGB1[0]+w2*RGB2[0],w1*RGB1[1]+w2*RGB2[1],w1*RGB1[2]+w2*RGB2[2]]
+  }
+
+  function rgbArray(col){
+    col+=0.000001;
+    var r=parseInt((0.5+Math.sin(col)*0.5)*256);
+    var g=parseInt((0.5+Math.cos(col)*0.5)*256);
+    var b=parseInt((0.5-Math.sin(col)*0.5)*256);
+    return[r,g,b]
+  }
+
+  function colorString(arr){
+    var r=parseInt(arr[0]);
+    var g=parseInt(arr[1]);
+    var b=parseInt(arr[2]);
+    return"#"+("0"+r.toString(16)).slice(-2)+("0"+g.toString(16)).slice(-2)+("0"+b.toString(16)).slice(-2)
+  }
+
+  function process(vars){
+    if(vars.points.length<vars.initParticles)
+      for(var i=0;i<5;++i)spawnParticle(vars);
+    var p,d,t;
+    p=Math.atan2(vars.camX,vars.camZ);
+    d=Math.sqrt(vars.camX*vars.camX+vars.camZ*vars.camZ);
+    d-=Math.sin(vars.frameNo/80)/25;t=Math.cos(vars.frameNo/300)/165;vars.camX=Math.sin(p+t)*d;
+    vars.camZ=Math.cos(p+t)*d;
+    vars.camY=-Math.sin(vars.frameNo/220)*15;
+    vars.yaw=Math.PI+p+t;
+    vars.pitch=elevation(vars.camX,vars.camZ,vars.camY)-Math.PI/2;var t;
+    for(var i=0;i<vars.points.length;++i){
+      x=vars.points[i].x;
+      y=vars.points[i].y;
+      z=vars.points[i].z;
+      d=Math.sqrt(x*x+z*z)/1.0075;
+      t=.1/(1+d*d/5);
+      p=Math.atan2(x,z)+t;
+      vars.points[i].x=Math.sin(p)*d;
+      vars.points[i].z=Math.cos(p)*d;
+      vars.points[i].y+=vars.points[i].vy*t*((Math.sqrt(vars.distributionRadius)-d)*2);
+      if(vars.points[i].y>vars.vortexHeight/2||d<.25){
+        vars.points.splice(i,1);
+        spawnParticle(vars)
+      }
+    }
+  }
+
+  function drawFloor(vars){
+    var x,y,z,d,point,a;
+    for(var i=-25;i<=25;i+=1){
+      for(var j=-25;j<=25;j+=1){
+        x=i*2;
+        z=j*2;
+        y=vars.floor;
+        d=Math.sqrt(x*x+z*z);
+        point=project3D(x,y-d*d/85,z,vars);
+
+        if(point.d!=-1){
+          size=1+15000/(1+point.d);
+          a=0.15-Math.pow(d/50,4)*0.15;
+          if(a>0){
+            vars.ctx.fillStyle=colorString(interpolateColors(rgbArray(d/26-vars.frameNo/40),[0,128,32],.5+Math.sin(d/6-vars.frameNo/8)/2));
+            vars.ctx.globalAlpha=a;
+            vars.ctx.fillRect(point.x-size/2,point.y-size/2,size,size)
+          }
+        }
+      }
+    }
+    vars.ctx.fillStyle="#82f";
+    for(var i=-25;i<=25;i+=1){
+      for(var j=-25;j<=25;j+=1){
+        x=i*2;
+        z=j*2;
+        y=-vars.floor;
+        d=Math.sqrt(x*x+z*z);
+        point=project3D(x,y+d*d/85,z,vars);
+        if(point.d!=-1){
+          size=1+15000/(1+point.d);
+          a=0.15-Math.pow(d/50,4)*0.15;
+          if(a>0){
+            vars.ctx.fillStyle=colorString(
+              interpolateColors(rgbArray(-d/26-vars.frameNo/40),
+              [32,0,128],
+              .5+Math.sin(-d/6-vars.frameNo/8)/2)
+            );
+            vars.ctx.globalAlpha=a;vars.ctx.fillRect(point.x-size/2,point.y-size/2,size,size)
+          }
+        }
+      }
+    }
+  }
+
+  function sortFunction(a,b){
+    return b.dist-a.dist
+  }
+
+  function draw(vars){
+    vars.ctx.globalAlpha=.15;vars.ctx.fillStyle="#000";
+    vars.ctx.fillRect(0,0,canvas.width,canvas.height);
+    drawFloor(vars);
+    var point,x,y,z,a;
+    for(var i=0;i<vars.points.length;++i){
+      x=vars.points[i].x;
+      y=vars.points[i].y;
+      z=vars.points[i].z;
+      point=project3D(x,y,z,vars);
+      if(point.d!=-1){
+        vars.points[i].dist=point.d;
+        size=1+vars.points[i].radius/(1+point.d);
+        d=Math.abs(vars.points[i].y);
+        a=.8-Math.pow(d/(vars.vortexHeight/2),1000)*.8;
+        vars.ctx.globalAlpha=a>=0&&a<=1?a:0;
+        vars.ctx.fillStyle=rgb(vars.points[i].color);
+        if(point.x>-1&&point.x<vars.canvas.width&&point.y>-1&&point.y<vars.canvas.height)
+          vars.ctx.fillRect(point.x-size/2,point.y-size/2,size,size)
+      }
+    }
+    vars.points.sort(sortFunction)
+  }
+
+  function spawnParticle(vars){
+    var p,ls;pt={};
+    p=Math.PI*2*Math.random();
+    ls=Math.sqrt(Math.random()*vars.distributionRadius);
+    pt.x=Math.sin(p)*ls;
+    pt.y=-vars.vortexHeight/2;
+    pt.vy=vars.initV/20+Math.random()*vars.initV;
+    pt.z=Math.cos(p)*ls;
+    pt.radius=200+800*Math.random();
+    pt.color=pt.radius/1000+vars.frameNo/250;vars.points.push(pt)
+  }
+  function frame(vars){
+    if(vars===undefined){
+      var vars={};vars.canvas=document.querySelector("canvas");
+      vars.ctx=vars.canvas.getContext("2d");
+      vars.canvas.width=document.body.clientWidth;
+      vars.canvas.height=document.body.clientHeight;
+      window.addEventListener("resize",function(){
+        vars.canvas.width=document.body.clientWidth;
+        vars.canvas.height=document.body.clientHeight;
+        vars.cx=vars.canvas.width/2;
+        vars.cy=vars.canvas.height/2},true);
+        vars.frameNo=0;vars.camX=0;
+        vars.camY=0;vars.camZ=-14;
+        vars.pitch=elevation(vars.camX,vars.camZ,vars.camY)-Math.PI/2;
+        vars.yaw=0;vars.cx=vars.canvas.width/2;
+        vars.cy=vars.canvas.height/2;vars.bounding=10;
+        vars.scale=500;vars.floor=26.5;
+        vars.points=[];vars.initParticles=1000;
+        vars.initV=.01;vars.distributionRadius=800;
+        vars.vortexHeight=25}vars.frameNo++;
+        requestAnimationFrame(function(){
+          frame(vars)
+        });
+        process(vars);
+        draw(vars)
+  }
+  frame();  
+</script>
         
 
 
@@ -604,4 +809,3 @@
 
 </body>
 </html>
-<script src="/js/scr/love_special.js"></script>
