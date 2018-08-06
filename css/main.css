@@ -1943,7 +1943,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #57f5e8;
+  background: #ff622f;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -3243,9 +3243,9 @@ pre .javascript .function {
 }
 article.post.post-type-normal:hover {
   transition: all 0.3s linear;
-  -webkit-box-shadow: 2px 0px 10px 4px #404040;
-  -moz-box-shadow: 2px 0px 10px 4px #404040;
-  box-shadow: 2px 0px 10px 4px #404040;
+  -webkit-box-shadow: 2px 0px 10px 4px #a6a6a6;
+  -moz-box-shadow: 2px 0px 10px 4px #a6a6a6;
+  box-shadow: 2px 0px 10px 4px #a6a6a6;
 }
 article.post.post-type-normal .post-block {
   background: rgba(255,255,255,0.85);
@@ -3253,11 +3253,19 @@ article.post.post-type-normal .post-block {
 .canvas-content {
   position: fixed;
   width: 100%;
-  height: 100%;
+  height: 340px;
   top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
   margin: auto;
   z-index: -100;
+  overflow: hidden;
+}
+article.post .post-block {
+  padding: 10px;
+}
+article.post .post-meta {
+  margin: 3px 0 10px 0;
+}
+article.post .post-button {
+  margin-top: 20px;
 }
